@@ -16,13 +16,12 @@ def download_webtext_dataset():
         print("Webtext dataset already exists. Not downloading")
         return
 
-    if not os.path.exists(subdir):
-        os.makedirs(subdir)
-    subdir = subdir.replace('\\', '/')
+    if not os.path.exists(WEBTEXT_DATASET_DIR):
+        os.makedirs(WEBTEXT_DATASET_DIR)
 
     r = requests.get(f"https://openaipublic.azureedge.net/gpt-2/output-dataset/v1/{WEBTEXT_DATASET_NAME}", stream=True)
 
-    with open(os.path.join(subdir, WEBTEXT_DATASET_NAME), 'wb') as f:
+    with open(os.path.join(WEBTEXT_DATASET_DIR, WEBTEXT_DATASET_NAME), 'wb') as f:
         file_size = int(r.headers["content-length"])
         chunk_size = 1000
         with tqdm(ncols=100, desc="Fetching webtext dataset", total=file_size, unit_scale=True) as pbar:
