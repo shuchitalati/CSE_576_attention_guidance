@@ -117,7 +117,7 @@ class AttentionGuidanceTrainer(Trainer):
                                self.args.gradient_accumulation_steps * self.args.num_train_epochs)
 
         return super().train(resume_from_checkpoint, trial, ignore_keys_for_eval, **kwargs)
-    
+
     def training_step(self, model: nn.Module, inputs: Dict[str, torch.Tensor | Any]) -> torch.Tensor:
         self.global_step += 1
         return super().training_step(model, inputs)

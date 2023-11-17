@@ -30,10 +30,8 @@ for dataset_name in classification_datasets:
     encoded_dataset = encode_inverse_scaling_dataset(dataset, tokenizer)
     encoded_datasets[dataset_name] = encoded_dataset
 
-
 print("\nClassification Accuracies")
 print("-------------------------")
 for dataset_name in encoded_datasets.keys():
     prediction_losses = calculate_sequence_loss(model, device, encoded_datasets[dataset_name], batch_size=BATCH_SIZE)
     print(f"{dataset_name}: {calculate_classification_accuracy(encoded_datasets[dataset_name], prediction_losses)}")
-    

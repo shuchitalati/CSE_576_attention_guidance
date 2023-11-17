@@ -6,19 +6,19 @@ import numpy as np
 from torch.nn import CrossEntropyLoss
 
 
-def calculate_sequence_loss(model, device, encoded_dataset, batch_size = 32) -> list[float]:
+def calculate_sequence_loss(model, device, encoded_dataset, batch_size=32) -> torch.Tensor:
     dataset = TensorDataset(
-        encoded_dataset["input_ids"], 
-        encoded_dataset["attention_mask"], 
-        encoded_dataset["position_ids"], 
+        encoded_dataset["input_ids"],
+        encoded_dataset["attention_mask"],
+        encoded_dataset["position_ids"],
         encoded_dataset["labels"]
-        )
+    )
 
     dataloader = DataLoader(
-                dataset,  # The training samples.
-                sampler = SequentialSampler(dataset), # Select batches sequentially
-                batch_size = batch_size # Trains with this batch size.
-            )
+        dataset,  # The training samples.
+        sampler=SequentialSampler(dataset),  # Select batches sequentially
+        batch_size=batch_size  # Trains with this batch size.
+    )
     prediction_losses = []
 
     for _, batch in enumerate(dataloader):
@@ -36,11 +36,11 @@ def calculate_sequence_loss(model, device, encoded_dataset, batch_size = 32) -> 
             # Flatten the tokens
             loss_fct = CrossEntropyLoss(reduction='none')
             loss = loss_fct(shift_logits.permute(0, 2, 1), shift_labels)
-            mean_loss = torch.sum(loss, dim=1)/torch.count_nonzero(loss, dim=1)
+            mean_loss = torch.sum(loss, dim=1) / torch.count_nonzero(loss, dim=1)
             prediction_losses.append(mean_loss.detach().cpu())
 
         torch.cuda.empty_cache()
-    
+
     return torch.cat(prediction_losses)
 
 
@@ -63,4 +63,4 @@ def calculate_classification_accuracy(encoded_dataset, prediction_losses):
         if predicted_indices[i] == answer_id:
             num_correct_predictions += 1
 
-    return num_correct_predictions/len(predicted_indices)
+    return num_correct_predictions / len(predicted_indices)
