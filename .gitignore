@@ -1,0 +1,6 @@
+.venv
+dataset/gpt2/*
+*.pyc
+models/*
+checkpoints/*
+.idea
