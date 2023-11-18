@@ -7,7 +7,7 @@ from transformers import Trainer
 from transformers.data.data_collator import DataCollator
 from transformers.modeling_utils import PreTrainedModel, unwrap_model
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
-from transformers.trainer_callback import TrainerCallback
+from transformers.trainer_callback import TrainerCallback, TrainerState, TrainerControl
 from transformers.trainer_utils import EvalPrediction
 from transformers.training_args import TrainingArguments
 from transformers.models.auto.modeling_auto import MODEL_FOR_CAUSAL_LM_MAPPING_NAMES
@@ -158,3 +158,14 @@ class AttentionGuidanceTrainer(Trainer):
             return 1.0
         else:
             return max(0.0, float(tot - cur) / float(max(1, tot - num_stagnant_steps)))
+
+
+# Print progress to stdout
+class StdoutCallback(TrainerCallback):
+    def __init__(self):
+        super().__init__()
+        self.cur_steps = 0
+
+    def on_step_end(self, args: TrainingArguments, state: TrainerState, control: TrainerControl, **kwargs):
+        self.cur_steps += 1
+        print(f"Completed {self.cur_steps}/{state.max_steps} Training Steps")
