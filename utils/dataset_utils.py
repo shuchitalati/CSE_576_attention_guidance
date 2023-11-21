@@ -2,7 +2,7 @@ import torch
 import json
 import ast
 
-TRAIN_BLOCK_SIZE = 1024
+TRAIN_BLOCK_SIZE = 512
 
 
 def load_dataset(dataset_path: str):

@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -p general
 #SBATCH -t 2-00:0:00
-#SBATCH --mem=50GB
+#SBATCH --mem=100GB
 #SBATCH -G a100:1
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=phegde7@asu.edu
