@@ -13,7 +13,7 @@ FINETUNED_SAVE_DIR = "./models"
 FINETUNED_MODEL_NAME = "gpt2-ag"
 DATASET_NAME = 'Skylion007/openwebtext'
 
-CONTRAST_TOKENS = [' not', ' Not', ' but', ' But', ' though', ' Though', 'though', 'not']
+CONTRAST_TOKENS = [' not', ' Not', ' but', ' But', ' though', ' Though', 'though', 'not', ' Unlike', ' Nevertheless', ' Nonetheless', ' Despite', ' Contrast', ' Contrary', ' Whereas', ' Alternatively', ' unlike', ' nevertheless', ' nonetheless', ' despite', ' contrast', ' contrary', ' whereas', ' alternatively']
 
 # Keys are the attention head number, values are the tokens that are guided
 ATTENTION_GUIDANCE_PATTERN = {
@@ -23,7 +23,7 @@ ATTENTION_GUIDANCE_PATTERN = {
 TRAINING_ARGS = TrainingArguments(
     per_device_train_batch_size=32,
     output_dir=CHECKPOINT_DIR,
-    num_train_epochs=4,
+    num_train_epochs=2,
     save_strategy='epoch'
 )
 
@@ -33,7 +33,7 @@ model = GPT2LMHeadModel.from_pretrained(PRETRAINED_MODEL_NAME)
 
 raw_dataset = load_dataset(
     path=DATASET_NAME,
-    split='train[:100000]',  # use train[:int_value] to load a subset of the dataset, mainly for testing purposes
+    split='train[:1000000]',  # use train[:int_value] to load a subset of the dataset, mainly for testing purposes
     download_config=DownloadConfig(cache_dir="./dataset/gpt2")
 )
 
